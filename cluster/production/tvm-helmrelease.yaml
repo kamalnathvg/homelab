@@ -13,15 +13,13 @@ metadata:
 spec:
   interval: 5m
   targetNamespace: default
-  
   chart:
     spec:
       chart: ./charts/tvm
       sourceRef:
         kind: GitRepository
         name: homelab-gitops
-  
   values:
     image:
       repository: kamalnathvg/tvm
-      tag: "latest"  # {"$imagepolicy": "flux-system:tvm"}
+      tag: "kamalnathvg/tvm:2026.06.29.4" # {"$imagepolicy": "flux-system:tvm"}
