@@ -1,4 +1,4 @@
-apiVersion: image.toolkit.fluxcd.io/v1beta1
+apiVersion: image.toolkit.fluxcd.io/v1
 kind: ImageRepository
 metadata:
   name: tvm
@@ -6,8 +6,10 @@ metadata:
 spec:
   image: kamalnathvg/tvm
   interval: 5m
+  secretRef:
+    name: docker-credentials
 ---
-apiVersion: image.toolkit.fluxcd.io/v1beta1
+apiVersion: image.toolkit.fluxcd.io/v1
 kind: ImagePolicy
 metadata:
   name: tvm
@@ -16,10 +18,10 @@ spec:
   imageRepositoryRef:
     name: tvm
   policy:
-    numeric:
+    alphabetical:
       order: asc
 ---
-apiVersion: image.toolkit.fluxcd.io/v1beta1
+apiVersion: image.toolkit.fluxcd.io/v1
 kind: ImageUpdateAutomation
 metadata:
   name: tvm
