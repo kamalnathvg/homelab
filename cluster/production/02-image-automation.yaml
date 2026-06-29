@@ -28,7 +28,7 @@ spec:
   interval: 5m
   sourceRef:
     kind: GitRepository
-    name: homelab-gitops
+    name: flux-system
   git:
     checkout:
       ref:
