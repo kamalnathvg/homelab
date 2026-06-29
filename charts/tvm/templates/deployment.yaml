@@ -67,7 +67,7 @@ spec:
               value: {{.Values.server.host}}
 
             - name: PORT
-              value: {{.Values.server.port}}
+              value: {{ .Values.server.port | toString | quote}}
 
             - name: JWT_SECRET
               valueFrom:
