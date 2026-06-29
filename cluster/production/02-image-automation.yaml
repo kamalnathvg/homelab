@@ -15,9 +15,11 @@ metadata:
 spec:
   imageRepositoryRef:
     name: tvm
+  filterTags:
+    pattern: '^[0-9]{4}\.[0-9]{2}\.[0-9]{2}\.[0-9]+$'
   policy:
-    semver:
-      range: '>=0.0.0'
+    alphabetical:
+      order: asc
 ---
 apiVersion: image.toolkit.fluxcd.io/v1
 kind: ImageUpdateAutomation
