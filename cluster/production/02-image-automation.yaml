@@ -1,0 +1,45 @@
+apiVersion: image.toolkit.fluxcd.io/v1beta1
+kind: ImageRepository
+metadata:
+  name: tvm
+  namespace: flux-system
+spec:
+  image: kamalnathvg/tvm
+  interval: 5m
+---
+apiVersion: image.toolkit.fluxcd.io/v1beta1
+kind: ImagePolicy
+metadata:
+  name: tvm
+  namespace: flux-system
+spec:
+  imageRepositoryRef:
+    name: tvm
+  policy:
+    semver:
+      range: '>=0.0.0'
+---
+apiVersion: image.toolkit.fluxcd.io/v1beta1
+kind: ImageUpdateAutomation
+metadata:
+  name: tvm
+  namespace: flux-system
+spec:
+  interval: 5m
+  sourceRef:
+    kind: GitRepository
+    name: homelab-gitops
+  git:
+    checkout:
+      ref:
+        branch: main
+    commit:
+      author:
+        email: kamalnath7171@gmail.com
+        name: Flux Automation
+      messageTemplate: 'chore(image): auto-update tvm to {{range .Updated.Images}}{{println .}}{{end}}'
+    push:
+      branch: main
+  update:
+    path: ./cluster/production
+    strategy: Setters
