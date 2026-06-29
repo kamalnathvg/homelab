@@ -37,7 +37,7 @@ spec:
       author:
         email: kamalnath7171@gmail.com
         name: Flux Automation
-      messageTemplate: 'chore(image): auto-update tvm to {{range .Changed.Images}}{{println .}}{{end}}'
+        messageTemplate: 'chore(image): auto-update tvm image'
     push:
       branch: main
   update:
