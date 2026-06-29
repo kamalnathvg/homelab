@@ -6,8 +6,6 @@ metadata:
 spec:
   image: kamalnathvg/tvm
   interval: 5m
-  secretRef:
-    name: docker-credentials
 ---
 apiVersion: image.toolkit.fluxcd.io/v1
 kind: ImagePolicy
