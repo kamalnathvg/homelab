@@ -22,4 +22,4 @@ spec:
   values:
     image:
       repository: kamalnathvg/tvm
-      tag: "2026.06.29.4" # {"$imagepolicy": "flux-system:tvm:tag"}
+      tag: "2026.06.29.5" # {"$imagepolicy": "flux-system:tvm:tag"}
