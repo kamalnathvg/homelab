@@ -1,23 +1,23 @@
-# jellyfin-pv.yaml
+# prometheus-pv.yaml
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: jellyfin-pv
+  name: prometheus-stack-pv
 spec:
   # Capacity is advisory only for NFS - your NAS manages actual limits
   # Still useful for resource planning and PVC matching
   capacity:
-    storage: 1500Gi
+    storage: 50Gi
   accessModes:
     # ReadWriteMany allows multiple pods to mount simultaneously
     # This is NFS's key advantage - shared access across the cluster
-    - ReadWriteMany
+    - ReadWriteOnce
   # Retain keeps the PV data even after PVC is deleted
   # Use Delete for test environments, Retain for production
   persistentVolumeReclaimPolicy: Retain
   # StorageClass groups similar storage types together
   # PVCs request storage by class name
-  storageClassName: nfs
+  storageClassName: nfs-monitoring
   # Mount options passed to the mount command
   mountOptions:
     - nfsvers=4.1    # Use NFS v4.1 for better performance and security
@@ -28,4 +28,4 @@ spec:
     - nosuid
   nfs:
     server: 10.0.0.231       # Your NAS IP address
-    path: /mnt/tank/k3s/jellyfin   # NFS export path from your NAS config
+    path: /mnt/tank/k3s/prometheus   # NFS export path from your NAS config

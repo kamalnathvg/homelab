@@ -1,4 +1,4 @@
-# Default values for jellyfin.
+# Default values for radarr.
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
@@ -7,11 +7,14 @@ replicaCount: 1
 
 # This sets the container image more information can be found here: https://kubernetes.io/docs/concepts/containers/images/
 image:
-  repository: linuxserver/jellyfin
+  repository: lscr.io/linuxserver/radarr
   # This sets the pull policy for images.
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
-  tag: "10.11.11"
+  tag: "6.2.1"
+
+strategy:
+  type: Recreate
 
 # This is for the secrets for pulling an image from a private repository more information can be found here: https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/
 imagePullSecrets: []
@@ -54,9 +57,9 @@ service:
   # This sets the service type more information can be found here: https://kubernetes.io/docs/concepts/services-networking/service/#publishing-services-service-types
   type: NodePort
   # This sets the ports more information can be found here: https://kubernetes.io/docs/concepts/services-networking/service/#field-spec-ports
-  port: 8096
-  targetPort: 8096
-  nodePort: 30896
+  port: 7878
+  targetPort: 7878
+  nodePort: 30778
 
 # This block is for setting up the ingress for more information can be found here: https://kubernetes.io/docs/concepts/services-networking/ingress/
 ingress:
@@ -92,10 +95,18 @@ livenessProbe:
   httpGet:
     path: /
     port: http
+  initialDelaySeconds: 60
+  periodSeconds: 10
+  timeoutSeconds: 5
+  failureThreshold: 6
 readinessProbe:
   httpGet:
     path: /
     port: http
+  initialDelaySeconds: 30
+  periodSeconds: 10
+  timeoutSeconds: 5
+  failureThreshold: 6
 
 # This section is for setting up autoscaling more information can be found here: https://kubernetes.io/docs/concepts/workloads/autoscaling/
 autoscaling:
@@ -105,26 +116,33 @@ autoscaling:
   targetCPUUtilizationPercentage: 80
   # targetMemoryUtilizationPercentage: 80
 
+# Additional volumes on the output Deployment definition.
 volumes:
-  - name: config
+  - name: radarr-data
     persistentVolumeClaim:
-      claimName: jellyfin-config
+      claimName: radarr-config
   - name: movies
     persistentVolumeClaim:
       claimName: jellyfin-movies
-  - name: shows
+  - name: downloads
     persistentVolumeClaim:
-      claimName: jellyfin-shows
+      claimName: qbittorrent-downloads
 
-volumeMounts:
-  - name: config
+# Additional volumeMounts on the output Deployment definition.
+volumeMounts: 
+  - name: radarr-data
     mountPath: /config
-    subPath: jellyfin/config
+    subPath: radarr/config
   - name: movies
-    mountPath: /media/movies
-  - name: shows
-    mountPath: /media/shows
+    mountPath: /movies
+  - name: downloads
+    mountPath: /downloads
 
+
+env:
+  PUID: "1000"
+  PGID: "1000"
+  TZ: "America/Toronto"
 
 nodeSelector: {}
 
