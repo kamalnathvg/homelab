@@ -1,0 +1,15 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: chandiroor
+spec:
+  chart:
+    spec:
+      sourceRef:
+        kind: GitRepository
+        name: santhigiri-release
+  values:
+    env:
+      APP_ENV: release
+    image:
+      tag: rc-2026.08.04.001  # {"$imagepolicy": "flux-system:chandiroor-release"}
